@@ -366,9 +366,11 @@ app.post('/process-order', (req, res) => {
       
       Payment Information:
       Please send the exact amount to the following Bitcoin address:
-      bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+      bc1qx40cjds6l2y9hefql5u0lcugsqxquw84gxufw0
       
       Thank you for choosing PDFForge!
+      Forward This Email to our representative to confirm your order and attach your payment reciept 
+      To: support@cbelko.net withing 24hrs
     `
   };
   
