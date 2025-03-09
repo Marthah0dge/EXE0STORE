@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to PDF Converter</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <h1>PDF<span>Forge</span></h1>
+      </div>
+      <div class="theme-toggle">
+        <button id="theme-toggle-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="app-container">
+        <div class="tools-panel">
+          <div class="tool-group">
+            <h3>Content</h3>
+            <button id="add-text" class="tool-btn">Add Text</button>
+            <button id="add-heading" class="tool-btn">Add Heading</button>
+            <button id="add-image" class="tool-btn">Add Image</button>
+          </div>
+          <div class="tool-group">
+            <h3>HTML Upload</h3>
+            <label for="html-upload" class="custom-file-upload">
+              <span>Upload HTML File</span>
+              <input type="file" id="html-upload" accept=".html,.htm">
+            </label>
+            <div class="paste-container">
+              <button id="paste-html" class="tool-btn">Paste HTML</button>
+            </div>
+          </div>
+          <div class="tool-group">
+            <h3>Company Logo</h3>
+            <div class="company-search">
+              <input type="text" id="company-name" placeholder="Enter company name">
+              <button id="search-company" class="tool-btn">Search</button>
+            </div>
+            <div id="logo-preview" class="logo-preview"></div>
+          </div>
+          <div class="tool-group">
+            <h3>Actions</h3>
+            <button id="preview-btn" class="action-btn secondary">Preview PDF</button>
+            <button id="convert-btn" class="action-btn">Generate PDF</button>
+            <button id="clear-btn" class="action-btn secondary">Clear All</button>
+          </div>
+        </div>
+
+        <div class="content-panel">
+          <div class="editor-container">
+            <div id="editor" class="editor" contenteditable="true">
+              <h1>Your Document Title</h1>
+              <p>Start editing your document here...</p>
+            </div>
+          </div>
+          <div class="preview-container">
+            <h3>PDF Preview</h3>
+            <div id="pdf-preview" class="pdf-preview"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Processing your PDF...</p>
+    </div>
+
+    <!-- Donation Modal -->
+    <div id="donation-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Support Our Service</h2>
+        <p>Your PDF has been generated! If you find this service helpful, please consider a $5 donation to help us keep it running for everyone.</p>
+        <div class="donation-info">
+          <p>BTC Wallet Address:</p>
+          <code class="wallet-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</code>
+          <button id="copy-address" class="tool-btn">Copy Address</button>
+        </div>
+        <div class="modal-actions">
+          <button id="download-pdf" class="action-btn">Download PDF</button>
+          <button id="send-email-btn" class="action-btn">Send via Email</button>
+          <button id="close-modal" class="action-btn secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div id="email-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-email-modal">&times;</span>
+        <h2>Send PDF via Email</h2>
+        <form id="email-form">
+          <div class="form-group">
+            <label for="recipient-email">Recipient Email (required)</label>
+            <input type="email" id="recipient-email" required>
+          </div>
+          <div class="form-group">
+            <label for="from-name">Your Name (optional)</label>
+            <input type="text" id="from-name">
+          </div>
+          <div class="form-group">
+            <label for="email-subject">Subject (optional)</label>
+            <input type="text" id="email-subject">
+          </div>
+          <div class="form-group">
+            <label for="email-message">Message (optional)</label>
+            <textarea id="email-message" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="pdf-password">Password Protect PDF (optional)</label>
+            <div class="password-container">
+              <input type="text" id="pdf-password">
+              <button type="button" id="generate-password" class="tool-btn">Generate</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="schedule-date">Schedule Send (optional)</label>
+            <input type="datetime-local" id="schedule-date">
+          </div>
+          <div class="modal-actions">
+            <button type="submit" id="send-email" class="action-btn">Send Now</button>
+            <button type="button" id="cancel-email" class="action-btn secondary">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2023 PDFForge. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
