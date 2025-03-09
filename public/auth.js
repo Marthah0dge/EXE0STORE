@@ -124,6 +124,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
+  // Check if we're on the home page and redirect if not authenticated
+  function checkHomePageAuth() {
+    // Check if this is the home page
+    const path = window.location.pathname;
+    const isHomePage = path === '/' || path === '/index.html';
+    const isAuthPage = path.includes('login.html') || path.includes('signup.html');
+    
+    if (isHomePage && !checkAuth() && !isAuthPage) {
+      window.location.href = 'login.html';
+    }
+  }
+  
   // Run on page load
   updateAuthUI();
+  checkHomePageAuth();
 });

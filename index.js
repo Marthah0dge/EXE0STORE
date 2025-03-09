@@ -55,6 +55,7 @@ const transporter = nodemailer.createTransport({
 
 // Routes
 app.get('/', (req, res) => {
+  // Just send the index.html file and let client-side auth.js handle redirection
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
