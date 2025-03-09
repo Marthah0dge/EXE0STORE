@@ -98,9 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Logout functionality
-  const logoutBtn = document.querySelector('.logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', function() {
+  document.addEventListener('click', function(e) {
+    // Use event delegation to handle logout button clicks
+    if (e.target && e.target.classList.contains('logout-btn')) {
       // Show loading overlay
       const loadingOverlay = document.getElementById('loading-overlay');
       if (loadingOverlay) {
@@ -112,13 +112,13 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingOverlay.style.display = 'flex';
       }
       
-      // Wait 5 seconds before logout
+      // Wait exactly 5 seconds before logout
       setTimeout(() => {
         localStorage.removeItem('user');
         window.location.href = 'login.html';
       }, 5000);
-    });
-  }
+    }
+  });
   
   // Update UI based on authentication state
   function updateAuthUI() {
@@ -126,24 +126,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginButtons = document.querySelectorAll('.login-btn');
     const signupButtons = document.querySelectorAll('.signup-btn');
     const logoutButtons = document.querySelectorAll('.logout-btn');
-    const profileButtons = document.querySelectorAll('.profile-btn');
     
     if (isLoggedIn) {
       // Hide login and signup buttons
       loginButtons.forEach(btn => btn.style.display = 'none');
       signupButtons.forEach(btn => btn.style.display = 'none');
       
-      // Show logout and profile buttons
+      // Show logout button
       logoutButtons.forEach(btn => btn.style.display = 'block');
-      profileButtons.forEach(btn => btn.style.display = 'block');
     } else {
       // Show login and signup buttons
       loginButtons.forEach(btn => btn.style.display = 'block');
       signupButtons.forEach(btn => btn.style.display = 'block');
       
-      // Hide logout and profile buttons
+      // Hide logout button
       logoutButtons.forEach(btn => btn.style.display = 'none');
-      profileButtons.forEach(btn => btn.style.display = 'none');
+    }
+  }
+  
+  // Check if we're on the home page and redirect if not authenticated
+  function checkHomePageAuth() {
+    // Check if this is the home page
+    const path = window.location.pathname;
+    const isHomePage = path === '/' || path === '/index.html';
+    const isAuthPage = path.includes('login.html') || path.includes('signup.html');
+    
+    if (isHomePage && !checkAuth() && !isAuthPage) {
+      window.location.href = 'login.html';
     }
   }
   
