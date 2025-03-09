@@ -145,7 +145,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <li>Secure access</li>
             <li>24/7 support</li>
           </ul>
-          <button class="buy-tool-btn" data-id="${tool.id}" data-name="${tool.name}" data-price="${tool.price}">Add to Cart</button>
+          <div class="tool-actions">
+            <button class="buy-tool-btn" data-id="${tool.id}" data-name="${tool.name}" data-price="${tool.price}">Add to Cart</button>
+            <button class="demo-tool-btn" data-name="${tool.name}">View Demo</button>
+          </div>
         </div>
       `;
       
@@ -345,6 +348,119 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
+  // Demo modal functionality
+  const demoModal = document.createElement('div');
+  demoModal.className = 'modal demo-modal';
+  demoModal.id = 'demo-modal';
+  demoModal.innerHTML = `
+    <div class="modal-content demo-modal-content">
+      <span class="close-demo-modal">&times;</span>
+      <h2 id="demo-title">Product Demo</h2>
+      <div id="demo-content" class="demo-content"></div>
+    </div>
+  `;
+  document.body.appendChild(demoModal);
+
+  // Close demo modal function
+  function closeDemo() {
+    demoModal.style.display = 'none';
+  }
+
+  // Function to generate demo content
+  function generateDemoContent(productName) {
+    const demoTitle = document.getElementById('demo-title');
+    const demoContent = document.getElementById('demo-content');
+    
+    demoTitle.textContent = productName + ' Demo';
+    demoContent.innerHTML = '<div class="spinner"></div><p>Loading demo...</p>';
+    
+    // Generate demo based on product name
+    setTimeout(() => {
+      let cleanName = productName.replace(' Page', '').replace(' SMTP', '');
+      let demoHTML = '';
+      
+      // Get product logo
+      const logoUrl = `https://logo.clearbit.com/${encodeURIComponent(cleanName.toLowerCase())}.com`;
+      
+      // Add product specific content
+      if (cleanName.includes('Office365') || cleanName.includes('Gmail') || cleanName.includes('Yahoo') || 
+          cleanName.includes('AOL') || cleanName.includes('Outlook') || cleanName.includes('ProtonMail')) {
+        // Email product demo
+        demoHTML = `
+          <div class="demo-gallery">
+            <img src="${logoUrl}" alt="${cleanName}" class="demo-logo" onerror="this.src='https://via.placeholder.com/150x60?text=${encodeURIComponent(cleanName)}'">
+            <div class="demo-info">
+              <p>Email service provider with secure mail access and spam protection.</p>
+            </div>
+            <div class="demo-screenshots">
+              <img src="https://via.placeholder.com/300x200?text=Inbox" alt="Inbox Demo">
+              <img src="https://via.placeholder.com/300x200?text=Compose" alt="Compose Demo">
+            </div>
+          </div>
+        `;
+      } else if (cleanName.includes('Amazon') || cleanName.includes('eBay') || cleanName.includes('Walmart') || 
+                cleanName.includes('Buy.com') || cleanName.includes('Best Buy') || cleanName.includes('Target')) {
+        // Shopping product demo
+        demoHTML = `
+          <div class="demo-gallery">
+            <img src="${logoUrl}" alt="${cleanName}" class="demo-logo" onerror="this.src='https://via.placeholder.com/150x60?text=${encodeURIComponent(cleanName)}'">
+            <div class="demo-info">
+              <p>Online shopping platform with secure checkout and customer support.</p>
+            </div>
+            <div class="demo-screenshots">
+              <img src="https://via.placeholder.com/300x200?text=Products" alt="Products Demo">
+              <img src="https://via.placeholder.com/300x200?text=Checkout" alt="Checkout Demo">
+            </div>
+          </div>
+        `;
+      } else if (cleanName.includes('Bank of America') || cleanName.includes('Chase') || cleanName.includes('Wells Fargo') || 
+                cleanName.includes('Citibank') || cleanName.includes('Citizen')) {
+        // Bank product demo
+        demoHTML = `
+          <div class="demo-gallery">
+            <img src="${logoUrl}" alt="${cleanName}" class="demo-logo" onerror="this.src='https://via.placeholder.com/150x60?text=${encodeURIComponent(cleanName)}'">
+            <div class="demo-info">
+              <p>Banking service with secure access to accounts and financial services.</p>
+            </div>
+            <div class="demo-screenshots">
+              <img src="https://via.placeholder.com/300x200?text=Banking+Dashboard" alt="Banking Dashboard">
+              <img src="https://via.placeholder.com/300x200?text=Account+Management" alt="Account Management">
+            </div>
+          </div>
+        `;
+      } else {
+        // Generic demo for other products
+        demoHTML = `
+          <div class="demo-gallery">
+            <img src="${logoUrl}" alt="${cleanName}" class="demo-logo" onerror="this.src='https://via.placeholder.com/150x60?text=${encodeURIComponent(cleanName)}'">
+            <div class="demo-info">
+              <p>Professional ${cleanName} service with secure access and user support.</p>
+            </div>
+            <div class="demo-screenshots">
+              <img src="https://via.placeholder.com/300x200?text=${cleanName}+Dashboard" alt="${cleanName} Dashboard">
+              <img src="https://via.placeholder.com/300x200?text=${cleanName}+Features" alt="${cleanName} Features">
+            </div>
+          </div>
+        `;
+      }
+      
+      demoContent.innerHTML = demoHTML;
+    }, 1000);
+  }
+  
+  // Event delegation for demo buttons
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('demo-tool-btn')) {
+      const productName = event.target.getAttribute('data-name');
+      demoModal.style.display = 'block';
+      generateDemoContent(productName);
+    }
+    
+    if (event.target.classList.contains('close-demo-modal')) {
+      closeDemo();
+    }
+  });
+  
   // Initialize
   loadingOverlay.style.display = 'flex';
   
@@ -359,6 +475,9 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('click', function(event) {
     if (event.target === agreementModal) {
       agreementModal.style.display = 'none';
+    }
+    if (event.target === demoModal) {
+      closeDemo();
     }
   });
 });

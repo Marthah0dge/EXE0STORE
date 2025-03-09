@@ -255,6 +255,42 @@ function sendEmail(mailOptions, res) {
   });
 }
 
+// Demo content API endpoint
+app.get('/api/demo-content/:productName', (req, res) => {
+  const { productName } = req.params;
+  
+  // Clean product name
+  const cleanName = productName.replace(' Page', '').replace(' SMTP', '');
+  
+  // Generate demo data based on product name
+  const demoData = {
+    name: productName,
+    description: `Professional ${cleanName} service with secure access and user support.`,
+    logoUrl: `https://logo.clearbit.com/${encodeURIComponent(cleanName.toLowerCase())}.com`,
+    screenshots: [
+      `https://via.placeholder.com/600x400?text=${encodeURIComponent(cleanName)}+Screenshot+1`,
+      `https://via.placeholder.com/600x400?text=${encodeURIComponent(cleanName)}+Screenshot+2`
+    ]
+  };
+  
+  // Add product-specific data
+  if (cleanName.includes('Office365') || cleanName.includes('Gmail') || cleanName.includes('Yahoo')) {
+    demoData.category = 'email';
+    demoData.description = 'Email service provider with secure mail access and spam protection.';
+    demoData.features = ['Secure email inbox', 'Spam protection', 'Mobile access', 'Calendar integration'];
+  } else if (cleanName.includes('Amazon') || cleanName.includes('eBay') || cleanName.includes('Walmart')) {
+    demoData.category = 'shopping';
+    demoData.description = 'Online shopping platform with secure checkout and customer support.';
+    demoData.features = ['Product catalog', 'Secure checkout', 'Order tracking', 'Customer reviews'];
+  } else if (cleanName.includes('Bank') || cleanName.includes('Citizen') || cleanName.includes('Wells Fargo')) {
+    demoData.category = 'banking';
+    demoData.description = 'Banking service with secure access to accounts and financial services.';
+    demoData.features = ['Account management', 'Money transfers', 'Bill payments', 'Mobile banking'];
+  }
+  
+  res.json(demoData);
+});
+
 // Authentication routes
 app.post('/auth/signup', (req, res) => {
   const { fullname, email, password } = req.body;
