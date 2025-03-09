@@ -1,0 +1,52 @@
+Tools name: you will listed on the tools 
+
+All bank usa uk Canada institutions names and you will add page infront of them with write up message for it, our most most popular bank page , price $30-$100
+
+Citizen Page
+Bank of America bank 
+
+All Email Addresses listed there name including webmail as well 
+Price for our Email pages where $50-$150
+Gmail page 
+Office365 page 
+Yahoo page 
+Aol page 
+At&t etc 
+
+All online shopping 
+$30-$50 price 
+Amazon page 
+EBay page 
+Walmart page 
+Buy.com page 
+Western union page
+Netflix page 
+Prime page etc. 
+
+smtp listed all smtp you know 
+
+Aws 60k sending limit $800 24hr limit rotate restore
+Office 365 smtp $45
+Google admin smtp $25
+Gmail smtp $15
+yahoo  smtp  $23 
+iCloud smtp $35 etc…..
+
+Invoice attached 
+Price range $50-$120
+Edu office invoice attachment
+Google Drive invoice attachment 
+Onedrive invoice attachment 
+etc 
+Add more other services ,
+
+Add Free Sender button and when user click the button display a Read. Message and agreement log message with button check say accept agreement and if user click next automatically open a new tab for this url using href {https://exe-sender.onrender.com/} 
+and make sure you added a well structured page  for the agreement page 📃 styling full page ,
+
+
+add smtp test tools also incase user bought smtp wanted to test it too perform a live validation for each smtp user input username password server port and test connection 📶 make sure the node Js performed email sequence for the smtp testing connection 📶 by findout the exact remain daily sending limit for each smtp user input by display the log details get the smtp daily limit and remain daily sending limit using the user input smtp and run auth check, properly 
+
+Make sure the cart 🛒 button work properly to leave user card tools and make sure cart 🛒 tools didn’t remove even if user logout, and auto calculate the total amount of the tools user where added to cart and run the checkout processing 
+
+
+Make sure you implement each tools name one after the other the space don’t matter if it’s reach from 1 to 500
