@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Tools - PDFForge</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <h1>PDF<span>Forge</span></h1>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="tools.html" class="nav-btn highlight">Tools</a>
+        <a href="cart.html" class="nav-btn cart-btn">
+          Cart
+          <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+        <a href="login.html" class="nav-btn login-btn">Login</a>
+        <a href="signup.html" class="nav-btn login-btn">Sign Up</a>
+        <a href="#" class="nav-btn profile-btn" style="display: none;">My Account</a>
+        <a href="#" class="nav-btn logout-btn" style="display: none;">Logout</a>
+      </nav>
+      <button id="mobile-menu-toggle" class="mobile-only">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </header>
+
+    <main class="tools-page">
+      <div class="tools-banner">
+        <h1>Digital Marketing Tools</h1>
+        <p>Boost your marketing and business with our professional tools</p>
+      </div>
+      
+      <div class="tools-filters">
+        <div class="search-tools">
+          <input type="text" id="tools-search" placeholder="Search tools...">
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All Tools</button>
+          <button class="filter-btn" data-filter="email">Email Marketing</button>
+          <button class="filter-btn" data-filter="social">Social Media</button>
+          <button class="filter-btn" data-filter="analytics">Analytics</button>
+        </div>
+      </div>
+      
+      <div id="tools-container" class="tools-grid"></div>
+    </main>
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Loading tools...</p>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About PDFForge</h3>
+          <p>Professional PDF tools for all your document needs.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p>Email: support@pdfforge.com</p>
+          <p>Phone: +1 (555) 123-4567</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 PDFForge. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="cart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simulate loading
+      const loadingOverlay = document.getElementById('loading-overlay');
+      loadingOverlay.style.display = 'flex';
+      
+      setTimeout(() => {
+        loadingOverlay.style.display = 'none';
+      }, 1500);
+      
+      // Tool filters functionality
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Apply filter
+          const filter = this.getAttribute('data-filter');
+          // In a real app, you would filter the tools here
+        });
+      });
+      
+      // Search functionality
+      const searchInput = document.getElementById('tools-search');
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        // In a real app, you would filter the tools by search term here
+      });
+    });
+  </script>
+</body>
+</html>

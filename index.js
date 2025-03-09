@@ -9,9 +9,15 @@ const nodemailer = require('nodemailer');
 const multer = require('multer');
 const fs = require('fs');
 const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Simple in-memory storage for users and orders
+// In a real app, you would use a database
+const users = [];
+const orders = [];
 
 // Configure storage for PDF files
 const storage = multer.diskStorage({
@@ -246,6 +252,106 @@ function sendEmail(mailOptions, res) {
       }
     }
   });
+}
+
+// Authentication routes
+app.post('/auth/signup', (req, res) => {
+  const { fullname, email, password } = req.body;
+  
+  // Check if user already exists
+  if (users.find(user => user.email === email)) {
+    return res.status(400).json({ error: 'User already exists with this email' });
+  }
+  
+  // Create new user
+  const newUser = {
+    id: uuidv4(),
+    fullname,
+    email,
+    password: hashPassword(password), // In a real app, you'd hash the password
+    createdAt: new Date()
+  };
+  
+  users.push(newUser);
+  
+  // Return user info (without password)
+  const { password: _, ...userWithoutPassword } = newUser;
+  res.status(201).json({ user: userWithoutPassword });
+});
+
+app.post('/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  // Find user
+  const user = users.find(user => user.email === email);
+  
+  // Check if user exists and password matches
+  if (!user || user.password !== hashPassword(password)) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+  
+  // Return user info (without password)
+  const { password: _, ...userWithoutPassword } = user;
+  res.status(200).json({ user: userWithoutPassword });
+});
+
+// Order processing
+app.post('/process-order', (req, res) => {
+  const { orderNumber, email, items, total, date } = req.body;
+  
+  // Create order
+  const newOrder = {
+    id: uuidv4(),
+    orderNumber,
+    email,
+    items,
+    total,
+    date,
+    status: 'pending'
+  };
+  
+  orders.push(newOrder);
+  
+  // Send confirmation email
+  const mailOptions = {
+    from: 'exesoftware010@gmail.com',
+    to: email,
+    subject: `Order Confirmation - ${orderNumber}`,
+    text: `
+      Thank you for your order with PDFForge!
+      
+      Order Number: ${orderNumber}
+      Total: $${total.toFixed(2)}
+      Date: ${new Date(date).toLocaleString()}
+      
+      Your order is being processed and will be ready within 24 hours.
+      Our representative will contact you with access to your purchased tools.
+      
+      Payment Information:
+      Please send the exact amount to the following Bitcoin address:
+      bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+      
+      Thank you for choosing PDFForge!
+    `
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Order confirmation email error:', error);
+    } else {
+      console.log('Order confirmation email sent:', info.response);
+    }
+  });
+  
+  res.status(201).json({ 
+    success: true, 
+    order: newOrder 
+  });
+});
+
+// Helper function to hash password
+function hashPassword(password) {
+  return crypto.createHash('sha256').update(password).digest('hex');
 }
 
 // Start server

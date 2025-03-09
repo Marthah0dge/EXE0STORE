@@ -17,7 +17,15 @@
         <button id="tools-menu-btn" class="nav-btn">Tools</button>
         <button id="save-pdf-btn" class="nav-btn">Save PDF</button>
         <button id="load-pdf-btn" class="nav-btn">Load PDF</button>
-        <button id="buy-tools-btn" class="nav-btn highlight">Buy Tools</button>
+        <a href="tools.html" class="nav-btn highlight">Buy Tools</a>
+        <a href="cart.html" class="nav-btn cart-btn">
+          Cart
+          <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+        <a href="login.html" class="nav-btn login-btn">Login</a>
+        <a href="signup.html" class="nav-btn login-btn">Sign Up</a>
+        <a href="#" class="nav-btn profile-btn" style="display: none;">My Account</a>
+        <a href="#" class="nav-btn logout-btn" style="display: none;">Logout</a>
         <div class="theme-toggle">
           <button id="theme-toggle-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -145,7 +153,29 @@
     </div>
 
     <footer>
-      <p>&copy; 2023 PDFForge. All rights reserved.</p>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About PDFForge</h3>
+          <p>Professional PDF tools for all your document needs.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p>Email: support@pdfforge.com</p>
+          <p>Phone: +1 (555) 123-4567</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 PDFForge. All rights reserved.</p>
+      </div>
     </footer>
   </div>
 
