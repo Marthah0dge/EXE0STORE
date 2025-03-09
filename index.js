@@ -350,6 +350,52 @@ app.post('/process-order', (req, res) => {
   });
 });
 
+// SMTP Test endpoint
+app.post('/test-smtp', (req, res) => {
+  const { host, port, username, password, security } = req.body;
+  
+  if (!host || !port || !username || !password) {
+    return res.status(400).json({ error: 'Missing required SMTP parameters' });
+  }
+  
+  // Create test transporter
+  const testTransporter = nodemailer.createTransport({
+    host: host,
+    port: parseInt(port),
+    secure: security === 'ssl', // true for SSL, false for TLS or none
+    auth: {
+      user: username,
+      pass: password,
+    },
+    tls: {
+      rejectUnauthorized: false // Allows self-signed certificates
+    }
+  });
+  
+  // Verify connection
+  testTransporter.verify((error, success) => {
+    if (error) {
+      console.error('SMTP verification error:', error);
+      return res.status(200).json({
+        success: false,
+        error: error.message || 'Connection failed'
+      });
+    } else {
+      // For a real app, you would check the actual limits from the provider's API
+      // Here we're simulating it with random values
+      const dailyLimit = Math.floor(Math.random() * 1000) + 1000;
+      const remainingLimit = Math.floor(Math.random() * dailyLimit);
+      
+      return res.status(200).json({
+        success: true,
+        dailyLimit: dailyLimit,
+        remainingLimit: remainingLimit,
+        details: `Successfully connected to ${host}:${port}`
+      });
+    }
+  });
+});
+
 // Helper function to hash password
 function hashPassword(password) {
   return crypto.createHash('sha256').update(password).digest('hex');

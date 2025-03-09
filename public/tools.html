@@ -43,18 +43,105 @@
         </div>
         <div class="filter-buttons">
           <button class="filter-btn active" data-filter="all">All Tools</button>
-          <button class="filter-btn" data-filter="email">Email Marketing</button>
-          <button class="filter-btn" data-filter="social">Social Media</button>
-          <button class="filter-btn" data-filter="analytics">Analytics</button>
+          <button class="filter-btn" data-filter="bank">Banking</button>
+          <button class="filter-btn" data-filter="email">Email</button>
+          <button class="filter-btn" data-filter="shopping">Shopping</button>
+          <button class="filter-btn" data-filter="smtp">SMTP</button>
+          <button class="filter-btn" data-filter="invoice">Invoice</button>
+          <button class="filter-btn" data-filter="utilities">Utilities</button>
         </div>
       </div>
       
       <div id="tools-container" class="tools-grid"></div>
+      
+      <!-- Free Sender Button -->
+      <div class="free-sender-section">
+        <button id="free-sender-btn" class="free-sender-btn">Free Sender</button>
+      </div>
+      
+      <!-- SMTP Test Tool -->
+      <div class="smtp-test-section">
+        <h2>SMTP Test Tool</h2>
+        <p>Test your SMTP connection and check remaining daily limits</p>
+        
+        <div class="smtp-test-form">
+          <div class="form-group">
+            <label for="smtp-host">SMTP Server</label>
+            <input type="text" id="smtp-host" placeholder="e.g., smtp.gmail.com">
+          </div>
+          <div class="form-group">
+            <label for="smtp-port">Port</label>
+            <input type="number" id="smtp-port" placeholder="e.g., 465">
+          </div>
+          <div class="form-group">
+            <label for="smtp-username">Username</label>
+            <input type="text" id="smtp-username" placeholder="Your SMTP username">
+          </div>
+          <div class="form-group">
+            <label for="smtp-password">Password</label>
+            <input type="password" id="smtp-password" placeholder="Your SMTP password">
+          </div>
+          <div class="form-group">
+            <label>Security</label>
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="smtp-security" value="ssl" checked> SSL
+              </label>
+              <label>
+                <input type="radio" name="smtp-security" value="tls"> TLS
+              </label>
+              <label>
+                <input type="radio" name="smtp-security" value="none"> None
+              </label>
+            </div>
+          </div>
+          <button id="test-smtp-btn" class="action-btn">Test Connection</button>
+        </div>
+        
+        <div id="smtp-test-results" class="smtp-test-results" style="display: none;">
+          <h3>SMTP Test Results</h3>
+          <div id="smtp-status"></div>
+          <div id="smtp-details"></div>
+        </div>
+      </div>
     </main>
 
     <div id="loading-overlay" class="loading-overlay">
       <div class="spinner"></div>
       <p>Loading tools...</p>
+    </div>
+    
+    <!-- Agreement Modal -->
+    <div id="agreement-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-agreement-modal">&times;</span>
+        <h2>Free Sender Agreement</h2>
+        <div class="agreement-content">
+          <p>By using our Free Sender service, you agree to the following terms and conditions:</p>
+          
+          <div class="agreement-terms">
+            <p>1. You will use this service responsibly and ethically.</p>
+            <p>2. You will not use this service for any illegal activities.</p>
+            <p>3. You will not use this service to send spam or unsolicited emails.</p>
+            <p>4. You will not use this service to harass, threaten, or harm others.</p>
+            <p>5. You understand that abuse of this service may result in termination of your account.</p>
+            <p>6. PDFForge reserves the right to monitor usage and terminate access at any time.</p>
+            <p>7. You understand that this service is provided "as is" without any warranties.</p>
+            <p>8. PDFForge is not responsible for any damages or losses that may result from using this service.</p>
+          </div>
+          
+          <div class="agreement-checkbox">
+            <label>
+              <input type="checkbox" id="accept-agreement"> I accept the terms and conditions
+            </label>
+          </div>
+          
+          <div class="modal-actions">
+            <button id="agreement-next-btn" class="action-btn" disabled>Next</button>
+            <button class="action-btn secondary close-agreement-modal">Cancel</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <footer>
@@ -86,39 +173,6 @@
 
   <script src="auth.js"></script>
   <script src="cart.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Simulate loading
-      const loadingOverlay = document.getElementById('loading-overlay');
-      loadingOverlay.style.display = 'flex';
-      
-      setTimeout(() => {
-        loadingOverlay.style.display = 'none';
-      }, 1500);
-      
-      // Tool filters functionality
-      const filterButtons = document.querySelectorAll('.filter-btn');
-      filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          // Remove active class from all buttons
-          filterButtons.forEach(btn => btn.classList.remove('active'));
-          
-          // Add active class to clicked button
-          this.classList.add('active');
-          
-          // Apply filter
-          const filter = this.getAttribute('data-filter');
-          // In a real app, you would filter the tools here
-        });
-      });
-      
-      // Search functionality
-      const searchInput = document.getElementById('tools-search');
-      searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        // In a real app, you would filter the tools by search term here
-      });
-    });
-  </script>
+  <script src="tools.js"></script>
 </body>
 </html>

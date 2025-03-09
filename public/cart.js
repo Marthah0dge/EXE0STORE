@@ -16,7 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Calculate cart total
   function calculateTotal() {
-    return cart.reduce((total, item) => total + item.price, 0);
+    return cart.reduce((total, item) => {
+      // Ensure price is treated as a number
+      const itemPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+      return total + itemPrice;
+    }, 0);
   }
   
   // Render cart items
