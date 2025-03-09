@@ -3,12 +3,19 @@ document.addEventListener('DOMContentLoaded', function() {
   // Theme Toggle
   const themeToggleBtn = document.getElementById('theme-toggle-btn');
   const body = document.body;
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mainNav = document.querySelector('.main-nav');
   
   // Check for saved theme preference
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme) {
     body.setAttribute('data-theme', savedTheme);
   }
+  
+  // Toggle mobile menu
+  mobileMenuToggle.addEventListener('click', function() {
+    mainNav.classList.toggle('show');
+  });
   
   themeToggleBtn.addEventListener('click', function() {
     const currentTheme = body.getAttribute('data-theme') || 'dark';
@@ -17,6 +24,241 @@ document.addEventListener('DOMContentLoaded', function() {
     body.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
   });
+  
+  // Save PDF functionality
+  const savePdfBtn = document.getElementById('save-pdf-btn');
+  const saveModal = document.getElementById('save-modal');
+  const closeSaveModal = document.querySelector('.close-save-modal');
+  const generateNewKeyBtn = document.getElementById('generate-new-key');
+  const confirmSaveBtn = document.getElementById('confirm-save');
+  const cancelSaveBtn = document.getElementById('cancel-save');
+  const pdfKeyElement = document.getElementById('pdf-key');
+  const copyKeyBtn = document.getElementById('copy-key');
+  
+  // Load PDF functionality
+  const loadPdfBtn = document.getElementById('load-pdf-btn');
+  const loadModal = document.getElementById('load-modal');
+  const closeLoadModal = document.querySelector('.close-load-modal');
+  const accessKeyInput = document.getElementById('access-key');
+  const loadSavedPdfBtn = document.getElementById('load-saved-pdf');
+  const cancelLoadBtn = document.getElementById('cancel-load');
+  const pdfInfoSection = document.getElementById('pdf-info');
+  const loadedPdfName = document.getElementById('loaded-pdf-name');
+  const loadedPdfDate = document.getElementById('loaded-pdf-date');
+  const loadedPdfViews = document.getElementById('loaded-pdf-views');
+  
+  // Buy Tools functionality
+  const buyToolsBtn = document.getElementById('buy-tools-btn');
+  const buyToolsModal = document.getElementById('buy-tools-modal');
+  const closeBuyModal = document.querySelector('.close-buy-modal');
+  const closeBuyToolsBtn = document.getElementById('close-buy-tools');
+  
+  // Save PDF Modal
+  savePdfBtn.addEventListener('click', function() {
+    if (!pdfBlobUrl) {
+      alert('Please generate a PDF first before saving.');
+      return;
+    }
+    generatePdfKey();
+    saveModal.style.display = 'block';
+  });
+  
+  closeSaveModal.addEventListener('click', function() {
+    saveModal.style.display = 'none';
+  });
+  
+  cancelSaveBtn.addEventListener('click', function() {
+    saveModal.style.display = 'none';
+  });
+  
+  generateNewKeyBtn.addEventListener('click', function() {
+    generatePdfKey();
+  });
+  
+  copyKeyBtn.addEventListener('click', function() {
+    navigator.clipboard.writeText(pdfKeyElement.textContent)
+      .then(() => {
+        copyKeyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyKeyBtn.textContent = 'Copy';
+        }, 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy:', err);
+      });
+  });
+  
+  confirmSaveBtn.addEventListener('click', function() {
+    const pdfName = document.getElementById('pdf-name').value || 'My Document';
+    const pdfKey = pdfKeyElement.textContent;
+    
+    if (!pdfBlobUrl || !pdfKey) {
+      alert('Unable to save PDF. Please try again.');
+      return;
+    }
+    
+    savePdfWithKey(pdfKey, pdfName);
+  });
+  
+  // Load PDF Modal
+  loadPdfBtn.addEventListener('click', function() {
+    loadModal.style.display = 'block';
+    pdfInfoSection.classList.add('hidden');
+  });
+  
+  closeLoadModal.addEventListener('click', function() {
+    loadModal.style.display = 'none';
+  });
+  
+  cancelLoadBtn.addEventListener('click', function() {
+    loadModal.style.display = 'none';
+  });
+  
+  loadSavedPdfBtn.addEventListener('click', function() {
+    const key = accessKeyInput.value.trim();
+    if (!key) {
+      alert('Please enter a valid access key');
+      return;
+    }
+    
+    loadPdfWithKey(key);
+  });
+  
+  // Buy Tools Modal
+  buyToolsBtn.addEventListener('click', function() {
+    buyToolsModal.style.display = 'block';
+  });
+  
+  closeBuyModal.addEventListener('click', function() {
+    buyToolsModal.style.display = 'none';
+  });
+  
+  closeBuyToolsBtn.addEventListener('click', function() {
+    buyToolsModal.style.display = 'none';
+  });
+  
+  const buyNowButtons = document.querySelectorAll('.buy-now-btn');
+  buyNowButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      alert('This feature will be available soon. Thank you for your interest!');
+    });
+  });
+  
+  // PDF Key generation and storage functions
+  function generatePdfKey() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let key = '';
+    for (let i = 0; i < 12; i++) {
+      key += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    pdfKeyElement.textContent = key;
+  }
+  
+  function savePdfWithKey(key, name) {
+    if (!pdfBlob && pdfBlobUrl) {
+      // Fetch the blob from the URL if not already available
+      fetch(pdfBlobUrl)
+        .then(res => res.blob())
+        .then(blob => {
+          pdfBlob = blob;
+          completeFileSave(key, name, blob);
+        });
+    } else if (pdfBlob) {
+      completeFileSave(key, name, pdfBlob);
+    } else {
+      alert('No PDF to save. Please generate a PDF first.');
+    }
+  }
+  
+  function completeFileSave(key, name, blob) {
+    // Create form data to send to server
+    const formData = new FormData();
+    formData.append('pdfKey', key);
+    formData.append('pdfName', name);
+    formData.append('pdfFile', blob, name + '.pdf');
+    
+    // Show loading indicator
+    loadingOverlay.style.display = 'flex';
+    
+    // Send to server
+    fetch('/save-pdf', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to save PDF');
+      }
+      return response.json();
+    })
+    .then(data => {
+      loadingOverlay.style.display = 'none';
+      saveModal.style.display = 'none';
+      alert(`PDF saved successfully! Your access key is: ${key}`);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      loadingOverlay.style.display = 'none';
+      alert('Failed to save PDF: ' + error.message);
+    });
+  }
+  
+  function loadPdfWithKey(key) {
+    // Show loading indicator
+    loadingOverlay.style.display = 'flex';
+    
+    // Send request to server
+    fetch(`/load-pdf/${key}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('PDF not found with this key');
+      }
+      return response.json();
+    })
+    .then(data => {
+      loadingOverlay.style.display = 'none';
+      
+      // Display PDF info
+      pdfInfoSection.classList.remove('hidden');
+      loadedPdfName.textContent = data.name;
+      loadedPdfDate.textContent = new Date(data.date).toLocaleString();
+      loadedPdfViews.textContent = data.views;
+      
+      // Ask if user wants to load the PDF
+      const loadConfirm = confirm(`Found PDF: ${data.name}\nDo you want to load it?`);
+      if (loadConfirm) {
+        // Load the PDF into the preview
+        fetch(`/download-pdf/${key}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to download PDF');
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          // Create a URL for the blob
+          pdfBlobUrl = window.URL.createObjectURL(blob);
+          pdfBlob = blob;
+          
+          // Create iframe to display the PDF
+          const iframe = document.createElement('iframe');
+          iframe.src = pdfBlobUrl;
+          
+          // Clear preview and add iframe
+          pdfPreview.innerHTML = '';
+          pdfPreview.appendChild(iframe);
+          
+          // Close the modal
+          loadModal.style.display = 'none';
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      loadingOverlay.style.display = 'none';
+      alert('Error: ' + error.message);
+    });
+  }
   
   // Editor Tools
   const editor = document.getElementById('editor');

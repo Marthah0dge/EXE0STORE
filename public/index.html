@@ -13,11 +13,20 @@
       <div class="logo-container">
         <h1>PDF<span>Forge</span></h1>
       </div>
-      <div class="theme-toggle">
-        <button id="theme-toggle-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        </button>
-      </div>
+      <nav class="main-nav">
+        <button id="tools-menu-btn" class="nav-btn">Tools</button>
+        <button id="save-pdf-btn" class="nav-btn">Save PDF</button>
+        <button id="load-pdf-btn" class="nav-btn">Load PDF</button>
+        <button id="buy-tools-btn" class="nav-btn highlight">Buy Tools</button>
+        <div class="theme-toggle">
+          <button id="theme-toggle-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+        </div>
+      </nav>
+      <button id="mobile-menu-toggle" class="mobile-only">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
     </header>
 
     <main>
@@ -142,4 +151,119 @@
 
   <script src="script.js"></script>
 </body>
+</html>
+<html>
+    <!-- Save PDF Modal -->
+    <div id="save-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-save-modal">&times;</span>
+        <h2>Save PDF for Later</h2>
+        <p>Generate a unique key to access your PDF at any time.</p>
+        <div class="form-group">
+          <label for="pdf-name">Name your PDF (optional)</label>
+          <input type="text" id="pdf-name" placeholder="My Document">
+        </div>
+        <div class="key-container">
+          <p>Your unique access key:</p>
+          <div class="generated-key">
+            <span id="pdf-key"></span>
+            <button id="copy-key" class="tool-btn">Copy</button>
+          </div>
+          <p class="key-info">Save this key to access your PDF later.</p>
+        </div>
+        <div class="modal-actions">
+          <button id="generate-new-key" class="action-btn">Generate New Key</button>
+          <button id="confirm-save" class="action-btn">Save PDF</button>
+          <button id="cancel-save" class="action-btn secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load PDF Modal -->
+    <div id="load-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-load-modal">&times;</span>
+        <h2>Load Saved PDF</h2>
+        <p>Enter your unique key to access your saved PDF.</p>
+        <div class="form-group">
+          <label for="access-key">Access Key</label>
+          <input type="text" id="access-key" placeholder="Enter your access key">
+        </div>
+        <div id="pdf-info" class="pdf-info hidden">
+          <p>Document: <span id="loaded-pdf-name"></span></p>
+          <p>Created: <span id="loaded-pdf-date"></span></p>
+          <p>Views: <span id="loaded-pdf-views"></span></p>
+        </div>
+        <div class="modal-actions">
+          <button id="load-saved-pdf" class="action-btn">Load PDF</button>
+          <button id="cancel-load" class="action-btn secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buy Tools Modal -->
+    <div id="buy-tools-modal" class="modal">
+      <div class="modal-content wide-content">
+        <span class="close-buy-modal">&times;</span>
+        <h2>Premium Marketing Tools</h2>
+        <p>Boost your marketing campaigns with our powerful tools.</p>
+        
+        <div class="pricing-container">
+          <div class="pricing-card">
+            <div class="card-header">
+              <h3>Email Campaign Manager</h3>
+              <p class="price">$19.99</p>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>Send to 2000+ email providers (Gmail, Yahoo, Outlook, AOL, etc.)</li>
+                <li>Custom templates</li>
+                <li>Campaign analytics</li>
+                <li>Scheduled sending</li>
+                <li>List management</li>
+              </ul>
+              <button class="buy-now-btn">Buy Now</button>
+            </div>
+          </div>
+          
+          <div class="pricing-card featured">
+            <div class="card-header">
+              <h3>SMS Campaign Sender</h3>
+              <p class="price">$24.99</p>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>Bulk SMS sending</li>
+                <li>Automated responses</li>
+                <li>Geographic targeting</li>
+                <li>Delivery tracking</li>
+                <li>Contact management</li>
+              </ul>
+              <button class="buy-now-btn">Buy Now</button>
+            </div>
+          </div>
+          
+          <div class="pricing-card">
+            <div class="card-header">
+              <h3>Cookie Tracking Suite</h3>
+              <p class="price">$14.99</p>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>Browser cookies management</li>
+                <li>User behavior tracking</li>
+                <li>Conversion optimization</li>
+                <li>GDPR compliant tools</li>
+                <li>Analytics dashboard</li>
+              </ul>
+              <button class="buy-now-btn">Buy Now</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-actions centered">
+          <button id="close-buy-tools" class="action-btn secondary">Close</button>
+        </div>
+      </div>
+    </div>
 </html>

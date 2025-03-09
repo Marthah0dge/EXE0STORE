@@ -52,6 +52,67 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// PDF storage with key management
+const pdfStorage = {};
+
+// Save PDF with generated key
+app.post('/save-pdf', upload.single('pdfFile'), (req, res) => {
+  const { pdfKey, pdfName } = req.body;
+  
+  if (!pdfKey || !req.file) {
+    return res.status(400).json({ error: 'Missing required data' });
+  }
+  
+  // Store PDF information
+  pdfStorage[pdfKey] = {
+    name: pdfName || 'Document',
+    filePath: req.file.path,
+    date: new Date(),
+    views: 0
+  };
+  
+  res.status(200).json({ success: true, key: pdfKey });
+});
+
+// Retrieve PDF information
+app.get('/load-pdf/:key', (req, res) => {
+  const { key } = req.params;
+  
+  if (!pdfStorage[key]) {
+    return res.status(404).json({ error: 'PDF not found' });
+  }
+  
+  // Increment view count
+  pdfStorage[key].views += 1;
+  
+  res.status(200).json({
+    name: pdfStorage[key].name,
+    date: pdfStorage[key].date,
+    views: pdfStorage[key].views
+  });
+});
+
+// Download PDF by key
+app.get('/download-pdf/:key', (req, res) => {
+  const { key } = req.params;
+  
+  if (!pdfStorage[key]) {
+    return res.status(404).json({ error: 'PDF not found' });
+  }
+  
+  const filePath = pdfStorage[key].filePath;
+  
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'PDF file not found on server' });
+  }
+  
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename=${pdfStorage[key].name}.pdf`);
+  
+  const fileStream = fs.createReadStream(filePath);
+  fileStream.pipe(res);
+});
+
 // HTML to PDF conversion endpoint
 app.post('/convert', (req, res) => {
   const htmlContent = req.body.htmlContent;

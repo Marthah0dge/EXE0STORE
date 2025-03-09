@@ -56,6 +56,7 @@ header {
   align-items: center;
   position: relative;
   z-index: 10;
+  flex-wrap: wrap;
 }
 
 .logo-container h1 {
@@ -71,6 +72,36 @@ header {
   font-weight: 300;
 }
 
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background: var(--bg-tertiary);
+  border: none;
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.nav-btn:hover {
+  background-color: var(--accent-tertiary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.nav-btn.highlight {
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  font-weight: 500;
+}
+
 .theme-toggle button {
   background: none;
   border: none;
@@ -84,6 +115,38 @@ header {
 .theme-toggle button:hover {
   background-color: var(--bg-tertiary);
   box-shadow: var(--glow);
+}
+
+#mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* Mobile menu styles */
+@media (max-width: 768px) {
+  #mobile-menu-toggle {
+    display: block;
+  }
+  
+  .main-nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 0;
+  }
+  
+  .main-nav.show {
+    display: flex;
+  }
+  
+  .nav-btn {
+    width: 100%;
+    text-align: left;
+  }
 }
 
 /* Main Content */
@@ -472,6 +535,157 @@ main {
   margin-left: -60px;
   opacity: 0;
   transition: opacity 0.3s;
+}
+
+
+/* Save/Load PDF Modal Styles */
+.key-container {
+  background-color: #edf2f7;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin: 1.5rem 0;
+  color: #333;
+  border: 1px solid #dae1e7;
+}
+
+.generated-key {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-primary);
+  padding: 0.75rem;
+  margin: 0.75rem 0;
+  border-radius: var(--border-radius);
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.key-info {
+  font-size: 0.9rem;
+  color: var(--accent-primary);
+  margin-top: 0.5rem;
+}
+
+.pdf-info {
+  background-color: #edf2f7;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin: 1.5rem 0;
+  color: #333;
+  border: 1px solid #dae1e7;
+}
+
+.pdf-info p {
+  margin-bottom: 0.5rem;
+}
+
+.pdf-info span {
+  font-weight: 500;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Buy Tools Modal Styles */
+.wide-content {
+  max-width: 900px;
+}
+
+.pricing-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.pricing-card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  width: 280px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-card.featured {
+  border: 2px solid var(--accent-primary);
+  transform: translateY(-5px);
+}
+
+.card-header {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  text-align: center;
+}
+
+.card-header h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.price {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-body ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.card-body li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--bg-tertiary);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.card-body li:before {
+  content: "✓";
+  color: var(--accent-primary);
+  position: absolute;
+  left: 0;
+}
+
+.buy-now-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.buy-now-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+
+.modal-actions.centered {
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .pricing-card {
+    width: 100%;
+  }
 }
 
 .tooltip .tooltip-text::after {
