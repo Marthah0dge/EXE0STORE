@@ -98,11 +98,25 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Logout functionality
-  const logoutBtn = document.getElementById('logout-btn');
+  const logoutBtn = document.querySelector('.logout-btn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function() {
-      localStorage.removeItem('user');
-      window.location.href = 'login.html';
+      // Show loading overlay
+      const loadingOverlay = document.getElementById('loading-overlay');
+      if (loadingOverlay) {
+        // Update loading message for logout
+        const loadingMessage = loadingOverlay.querySelector('p');
+        if (loadingMessage) {
+          loadingMessage.textContent = 'Logging out...';
+        }
+        loadingOverlay.style.display = 'flex';
+      }
+      
+      // Wait 5 seconds before logout
+      setTimeout(() => {
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      }, 5000);
     });
   }
   
@@ -110,15 +124,24 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateAuthUI() {
     const isLoggedIn = checkAuth();
     const loginButtons = document.querySelectorAll('.login-btn');
+    const signupButtons = document.querySelectorAll('.signup-btn');
     const logoutButtons = document.querySelectorAll('.logout-btn');
     const profileButtons = document.querySelectorAll('.profile-btn');
     
     if (isLoggedIn) {
+      // Hide login and signup buttons
       loginButtons.forEach(btn => btn.style.display = 'none');
+      signupButtons.forEach(btn => btn.style.display = 'none');
+      
+      // Show logout and profile buttons
       logoutButtons.forEach(btn => btn.style.display = 'block');
       profileButtons.forEach(btn => btn.style.display = 'block');
     } else {
+      // Show login and signup buttons
       loginButtons.forEach(btn => btn.style.display = 'block');
+      signupButtons.forEach(btn => btn.style.display = 'block');
+      
+      // Hide logout and profile buttons
       logoutButtons.forEach(btn => btn.style.display = 'none');
       profileButtons.forEach(btn => btn.style.display = 'none');
     }
