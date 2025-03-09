@@ -101,24 +101,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Keep cart but remove user
     localStorage.removeItem('user');
     updateAuthUI();
-    if (window.location.pathname.includes('/tools.html') || 
-        window.location.pathname.includes('/cart.html')) {
-      // Show loading spinner
-      const loadingOverlay = document.createElement('div');
-      loadingOverlay.className = 'loading-overlay';
-      loadingOverlay.innerHTML = `
-        <div class="spinner"></div>
-        <p>Logging out...</p>
-      `;
-      document.body.appendChild(loadingOverlay);
+    
+    // Show loading spinner for all pages
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-overlay';
+    loadingOverlay.innerHTML = `
+      <div class="spinner"></div>
+      <p>Logging out...</p>
+    `;
+    document.body.appendChild(loadingOverlay);
 
-      // Redirect after 5 seconds
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 5000);
-    }
+    // Redirect after 5 seconds
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 5000);
   }
-
 
   // Logout functionality
   document.addEventListener('click', function(e) {
@@ -149,18 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Hide logout button
       logoutButtons.forEach(btn => btn.style.display = 'none');
-    }
-  }
-
-  // Check if we're on the home page and redirect if not authenticated
-  function checkHomePageAuth() {
-    // Check if this is the home page
-    const path = window.location.pathname;
-    const isHomePage = path === '/' || path === '/index.html';
-    const isAuthPage = path.includes('login.html') || path.includes('signup.html');
-
-    if (isHomePage && !checkAuth() && !isAuthPage) {
-      window.location.href = 'login.html';
     }
   }
 
